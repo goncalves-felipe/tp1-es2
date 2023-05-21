@@ -2,7 +2,7 @@ import { Peca } from "./model/Peca/Peca";
 import { Fornecedor } from "./model/Fornecedor/Fornecedor";
 import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
-import { select } from '@inquirer/prompts';
+import select, { Separator } from '@inquirer/select';
 import readline from 'readline';
 
 const fornecedores: Fornecedor[] = [
@@ -46,6 +46,36 @@ async function interacaoUsuario() {
             { name: "Cliente", value: "1" },
             { name: "Funcionário", value: "2" }
         ]
+    });
+    switch (answer) {
+        case "1":
+            await interacaoCliente()  
+            break;
+        case "2":
+            await interacaoFuncionario()
+            break;
+    }
+}
+
+async function interacaoCliente() {
+    let choices = clientes.map((cliente) => {
+        return { name: cliente.nome, value: cliente }
+    });
+    const answer = await select({
+        message: "Quem é você?",
+        choices: choices
+    });
+    console.log(answer);
+}
+
+
+async function interacaoFuncionario() {
+    let choices = funcionarios.map((Funcionario) => {
+        return { name: Funcionario.nome, value: Funcionario }
+    });
+    const answer = await select({
+        message: "Quem é você?",
+        choices: choices
     });
     console.log(answer);
 }
