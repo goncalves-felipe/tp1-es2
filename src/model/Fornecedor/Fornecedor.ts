@@ -11,7 +11,7 @@ export class Fornecedor extends Pessoa {
     cnpj?: string
   ) {
     super(id, nome, email, nroTelefone);
-    this._cnpj = cnpj ?? "";
+    this._cnpj = cnpj ? cnpj : "";
   }
 
   public get cnpj(): string {
