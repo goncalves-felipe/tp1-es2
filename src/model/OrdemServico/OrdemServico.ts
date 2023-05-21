@@ -241,7 +241,7 @@ export class OrdemServico {
   }
 
   public pagar(valor: number): void {
-    if (this._valorFinal + valor > this._valorFinal)
+    if (this._valorPago + valor > this._valorFinal)
       throw Error("Erro: valor pago maior que valor total");
 
     this._valorPago += valor;

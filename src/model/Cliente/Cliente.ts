@@ -11,7 +11,7 @@ export class Cliente extends Pessoa {
     endereco?: string
   ) {
     super(id, nome, email, nroTelefone);
-    this._endereco = endereco ?? '';
+    this._endereco = endereco ? endereco : '';
   }
 
   get endereco(): string {
