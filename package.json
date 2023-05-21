@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "NODE_PATH=./build node build/index.js",
+    "start": "nodemon src/index.ts",
     "build": "tsc -p .",
     "dev": "nodemon src/index.ts",
     "test": "jest"
