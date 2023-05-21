@@ -1,43 +1,8 @@
-import { Peca } from "./model/Peca/Peca";
-import { Fornecedor } from "./model/Fornecedor/Fornecedor";
 import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
-import { ServicoFuncionario } from "./model/ServicoFuncionario/ServicoAlocado";
-import select, { Separator } from '@inquirer/select';
 import input from '@inquirer/input';
 import readline from 'readline';
-import { OrdemServico } from "./model/OrdemServico/OrdemServico";
-
-const fornecedores: Fornecedor[] = [
-    new Fornecedor(1, "João da Silva", "joaodasilva@email.teste", "+99(99)99999-9999", "11.111.111/0001-11"),
-    new Fornecedor(2, "José Carlos", "josecalors@email.teste", "+99(99)99999-9999", "11.111.111/0001-11")
-];
-
-const pecas: Peca[] = [
-    new Peca(1, "Motor de geladeira", 100, 20, 20, 20, 3, 0, fornecedores[1]),
-    new Peca(2, "Tira de vedação", 10, 100, 4, 1, 20, 0, fornecedores[0]),
-    new Peca(3, "Fio de cobre", 5, 1000, 0.1, 0.1, 50, 0, fornecedores[0]),
-    new Peca(4, "Cano de cobre", 8, 100, 2, 2, 30, 0, fornecedores[1])
-];
-
-const funcionarios: Funcionario[] = [
-    new Funcionario(1, "Pedro Silva", "pedrosilva@email.teste", "+99(99)99999-9999", 10, new Date()),
-    new Funcionario(1, "Lucas Henrique", "lucashenrique@email.teste", "+99(99)99999-9999", 11, new Date()),
-];
-
-const clientes: Cliente[] = [
-    new Cliente(1, "Lucas Henrique", "+99(99)99999-9999", "Rua 1 nro 2, bairro 3, cidade 4"),
-    new Cliente(2, "Antônio", "+99(99)99999-9999", "Rua 10 nro 20, bairro 30, cidade 40")
-];
-
-const servicosFuncionario : ServicoFuncionario[] = [
-    new ServicoFuncionario(funcionarios[0], 10),
-];
-
-
-const ordensServico: OrdemServico[] = [
-    new OrdemServico(1, "Motor de Geladeira", "Troca do motor de geladeira", [servicosFuncionario[0]], clientes[0], 1, [pecas[0]], [], 100, 0, 0, 0, false),
-];
+import { clientes, funcionarios, ordensServico } from "./dados";
 
 const reader = readline.createInterface({
     input: process.stdin,
@@ -45,8 +10,6 @@ const reader = readline.createInterface({
 });
 
 function main(): void {
-
-
     interacaoUsuario();
 }
 
@@ -56,6 +19,7 @@ async function interacaoUsuario() {
 
         const respostaTipoUsuario = await input({ message: 'O que você é\n1 - Cliente\n2 - Funcionario\n' });
         switch (respostaTipoUsuario) {
+            
             case "1":
                 await interacaoCliente()  
                 interacaoValidaUsuario = true;
@@ -86,7 +50,7 @@ async function interacaoAndamentoServico(cliente: Cliente) {
                 if(ordemServicoSelecionada){
                     console.log(`A ordem de serviço ${ordemServicoSelecionada.id} está ${ordemServicoSelecionada.status} e possui o valor de R$${ordemServicoSelecionada.valorFinal}. ${ordemServicoSelecionada.funcionariosAlocados.length > 0 ? "Os funcionários alocados são: \n" + ordemServicoSelecionada.funcionariosAlocados.map((servicoFuncionario) => servicoFuncionario.funcionario.nome).join(", ")  + "\n": "\n"}`)
                     interacaoValidaAndamentoServico = true;
-                    interacaoAcoesCliente(cliente);
+                    return interacaoAcoesCliente(cliente);
                 } else {
                     console.log("Opção inválida");
                 }
@@ -95,8 +59,8 @@ async function interacaoAndamentoServico(cliente: Cliente) {
             }
         }
     } else {
-        console.log("Você não possui nenhuma ordem de serviço");
-        interacaoAcoesCliente(cliente);
+        console.log("\nVocê não possui nenhuma ordem de serviço\n");
+        return interacaoAcoesCliente(cliente);
     }
 
 } 
@@ -119,8 +83,7 @@ async function interacaoAcoesCliente(cliente: Cliente) {
                 interacaoValidaAcoesCliente = true;
                 break;
             case "3":
-                console.log("Visualizar andamento do serviço");
-                interacaoAndamentoServico(cliente);
+                await interacaoAndamentoServico(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             default:
@@ -144,7 +107,7 @@ async function interacaoCliente() {
             if(resposta > 0 && resposta <= clientes.length){ 
                 interacaoValidaUsuario = true;
                 let clienteSelecionado = clientes[resposta - 1];
-                interacaoAcoesCliente(clienteSelecionado);
+                await interacaoAcoesCliente(clienteSelecionado);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -175,7 +138,7 @@ async function interacaoFuncionario() {
             if(resposta > 0 && resposta <= funcionarios.length){ 
                 interacaoValidaFuncionario = true;
                 let funcionarioSelecionado = funcionarios[resposta - 1];
-                interacaoAcaoFuncionario(funcionarioSelecionado);
+                await interacaoAcaoFuncionario(funcionarioSelecionado);
             } else {
                 console.log("Opção inválida");
                 break;
