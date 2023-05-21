@@ -13,7 +13,7 @@ export class Funcionario extends Pessoa {
     dataContratacao?: Date | string
   ) {
     super(id, nome, email, nroTelefone);
-    this._custoHora = custoHora ?? 0;
+    this._custoHora = custoHora ? custoHora : 0;
     this._dataContratacao = dataContratacao
       ? new Date(dataContratacao)
       : new Date();

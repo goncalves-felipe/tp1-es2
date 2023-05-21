@@ -22,15 +22,15 @@ export class Peca {
     quantidadeUtilizada?: number,
     fornecedor?: Fornecedor
   ) {
-    this._id = id ?? 0;
-    this._nome = nome ?? "";
-    this._preco = preco ?? 0;
-    this._altura = altura ?? 0;
-    this._largura = largura ?? 0;
-    this._comprimento = comprimento ?? 0;
-    this._estoque = estoque ?? 0;
-    this._fornecedor = fornecedor ?? new Fornecedor();
-    this._quantidadeUtilizada = quantidadeUtilizada ?? 0;
+    this._id = id ? id : 0;
+    this._nome = nome ? nome : "";
+    this._preco = preco ? preco : 0;
+    this._altura = altura ? altura : 0;
+    this._largura = largura ? largura : 0;
+    this._comprimento = comprimento ? comprimento : 0;
+    this._estoque = estoque ? estoque : 0;
+    this._fornecedor = fornecedor ? fornecedor : new Fornecedor();
+    this._quantidadeUtilizada = quantidadeUtilizada ? quantidadeUtilizada : 0;
   }
 
   public get id(): number {

@@ -36,7 +36,7 @@ function interacaoUsuario(): void {
         output: process.stdout
     });
 
-    reader.question('Quem eh você? \n[1] Cliente \n[2] Funcionario ', (opcao) => {
+    reader.question('Quem eh você? \n[1] Cliente \n[2] Funcionario\n', (opcao) => {
         if (opcao.toUpperCase() === '1') {
             console.log('Opção escolhida: Cliente');
         } else if (opcao.toUpperCase() === '2') {
