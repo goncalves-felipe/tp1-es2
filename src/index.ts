@@ -2,9 +2,11 @@ import { Peca } from "./model/Peca/Peca";
 import { Fornecedor } from "./model/Fornecedor/Fornecedor";
 import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
+import { ServicoFuncionario } from "./model/ServicoFuncionario/ServicoAlocado";
 import select, { Separator } from '@inquirer/select';
 import input from '@inquirer/input';
 import readline from 'readline';
+import { OrdemServico } from "./model/OrdemServico/OrdemServico";
 
 const fornecedores: Fornecedor[] = [
     new Fornecedor(1, "João da Silva", "joaodasilva@email.teste", "+99(99)99999-9999", "11.111.111/0001-11"),
@@ -26,6 +28,15 @@ const funcionarios: Funcionario[] = [
 const clientes: Cliente[] = [
     new Cliente(1, "Lucas Henrique", "+99(99)99999-9999", "Rua 1 nro 2, bairro 3, cidade 4"),
     new Cliente(2, "Antônio", "+99(99)99999-9999", "Rua 10 nro 20, bairro 30, cidade 40")
+];
+
+const servicosFuncionario : ServicoFuncionario[] = [
+    new ServicoFuncionario(funcionarios[0], 10),
+];
+
+
+const ordensServico: OrdemServico[] = [
+    new OrdemServico(1, "Motor de Geladeira", "Troca do motor de geladeira", [servicosFuncionario[0]], clientes[0], 1, [pecas[0]], [], 100, 0, 0, 0, false),
 ];
 
 const reader = readline.createInterface({
@@ -60,8 +71,62 @@ async function interacaoUsuario() {
    
 }
 
+async function interacaoAndamentoServico(cliente: Cliente) {
+    let ordensServicoCliente = ordensServico.filter((ordemServico) => ordemServico.cliente.id == cliente.id);
+    if(ordensServicoCliente.length > 0){
+        let interacaoValidaAndamentoServico = false;
+        while(!interacaoValidaAndamentoServico){
+            let questaoAndamentoServico = "Qual ordem de serviço você deseja visualizar?\n"
+            ordensServicoCliente.forEach((ordemServico) => {
+                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao}\n`
+            });
+            let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
+            try {
+                let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
+                if(ordemServicoSelecionada){
+                    console.log(`A ordem de serviço ${ordemServicoSelecionada.id} está ${ordemServicoSelecionada.status} e possui o valor de R$${ordemServicoSelecionada.valorFinal}. ${ordemServicoSelecionada.funcionariosAlocados.length > 0 ? "Os funcionários alocados são: \n" + ordemServicoSelecionada.funcionariosAlocados.map((servicoFuncionario) => servicoFuncionario.funcionario.nome).join(", ")  + "\n": "\n"}`)
+                    interacaoValidaAndamentoServico = true;
+                    interacaoAcoesCliente(cliente);
+                } else {
+                    console.log("Opção inválida");
+                }
+            } catch (error){
+                console.log("Opção inválida");
+            }
+        }
+    } else {
+        console.log("Você não possui nenhuma ordem de serviço");
+        interacaoAcoesCliente(cliente);
+    }
+
+} 
+
 async function interacaoAcoesCliente(cliente: Cliente) {
-    console.log("Olá, " + cliente.nome);
+    let interacaoValidaAcoesCliente = false;
+    while(!interacaoValidaAcoesCliente){
+        let questaoAcoesCliente = "O que você deseja fazer?\n"
+        questaoAcoesCliente += "1 - Solicitar orçamento\n"
+        questaoAcoesCliente += "2 - Aprovar orçamento\n"
+        questaoAcoesCliente += "3 - Visualizar andamento do serviço\n"
+        const respostaAcoesCliente = await input({ message: questaoAcoesCliente });
+        switch (respostaAcoesCliente) {
+            case "1":
+                console.log("Solicitar orçamento");
+                interacaoValidaAcoesCliente = true;
+                break;
+            case "2":
+                console.log("Aprovar orçamento");
+                interacaoValidaAcoesCliente = true;
+                break;
+            case "3":
+                console.log("Visualizar andamento do serviço");
+                interacaoAndamentoServico(cliente);
+                interacaoValidaAcoesCliente = true;
+                break;
+            default:
+                console.log("Opção inválida");
+        }
+    }
 }
 
 async function interacaoCliente() {
