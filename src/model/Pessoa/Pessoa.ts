@@ -10,10 +10,10 @@ export class Pessoa {
     email?: string,
     nroTelefone?: string
   ) {
-    this._id = id ?? 0;
-    this._nome = nome ?? "";
-    this._email = email ?? "";
-    this._nroTelefone = nroTelefone ?? "";
+    this._id = id ? id : 0;
+    this._nome = nome ? nome : "";
+    this._email = email ? email : "";
+    this._nroTelefone = nroTelefone ? nroTelefone : "";
   }
 
   get id(): number {
