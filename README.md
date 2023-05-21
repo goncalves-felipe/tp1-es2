@@ -1,7 +1,7 @@
 # tp1-es2
 
 1. Nome dos Integrantes do Grupo
-- 
+- Felipe de Paula Gonçalves
 - Hector Julio Pardinho Soares
 - Joao Pedro Braga Ennes
 - Pedro Henrique Alves Moutinho
