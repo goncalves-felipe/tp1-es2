@@ -3,7 +3,7 @@
 1. Nome dos Integrantes do Grupo
 - 
 - Hector Julio Pardinho Soares
-- 
+- Joao Pedro Braga Ennes
 - Pedro Henrique Alves Moutinho
 
 
