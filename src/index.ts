@@ -60,12 +60,17 @@ async function interacaoUsuario() {
    
 }
 
+async function interacaoAcoesCliente(cliente: Cliente) {
+    console.log("Olá, " + cliente.nome);
+}
+
 async function interacaoCliente() {
     let interacaoValidaUsuario = false;
     let questaoCliente = "Quem é você?\n"
     clientes.forEach((cliente) => {
         questaoCliente += `${cliente.id} - ${cliente.nome}\n`
     });
+
     while(!interacaoValidaUsuario){
         
         const respostaCliente = await input({ message: questaoCliente });
@@ -74,7 +79,7 @@ async function interacaoCliente() {
             if(resposta > 0 && resposta <= clientes.length){ 
                 interacaoValidaUsuario = true;
                 let clienteSelecionado = clientes[resposta - 1];
-                console.log(`Olá ${clienteSelecionado.nome}`);
+                interacaoAcoesCliente(clienteSelecionado);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -84,19 +89,36 @@ async function interacaoCliente() {
         }
 
     }
-    // interacaoAcoesCliente()
 }
 
+async function interacaoAcaoFuncionario(funcionario: Funcionario) {
+    console.log("Olá, " + funcionario.nome);
+}
 
 async function interacaoFuncionario() {
-    let choices = funcionarios.map((Funcionario) => {
-        return { name: Funcionario.nome, value: Funcionario }
-    });
-    const answer = await select({
-        message: "Quem é você?",
-        choices: choices
+    let interacaoValidaFuncionario = false;
+    let questaoFuncionario = "Quem é você?\n"
+    funcionarios.forEach((funcionario) => {
+        questaoFuncionario += `${funcionario.id} - ${funcionario.nome}\n`
     });
 
+    while(!interacaoValidaFuncionario){
+        
+        const respostaFuncionario = await input({ message: questaoFuncionario });
+        try {
+            let resposta = parseInt(respostaFuncionario);
+            if(resposta > 0 && resposta <= funcionarios.length){ 
+                interacaoValidaFuncionario = true;
+                let funcionarioSelecionado = funcionarios[resposta - 1];
+                interacaoAcaoFuncionario(funcionarioSelecionado);
+            } else {
+                console.log("Opção inválida");
+                break;
+            }
+        } catch(error) {
+            console.log("Opção inválida")
+        }
+    }
 }
 
 main();
