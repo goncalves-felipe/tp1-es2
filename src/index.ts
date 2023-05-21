@@ -3,6 +3,7 @@ import { Fornecedor } from "./model/Fornecedor/Fornecedor";
 import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
 import select, { Separator } from '@inquirer/select';
+import input from '@inquirer/input';
 import readline from 'readline';
 
 const fornecedores: Fornecedor[] = [
@@ -38,34 +39,52 @@ function main(): void {
     interacaoUsuario();
 }
 
-async function interacaoUsuario() {
+async function interacaoUsuario() { 
+    let interacaoValidaUsuario = false;
+    while(!interacaoValidaUsuario){
 
-    const answer = await select({
-        message: "Você é:",
-        choices: [
-            { name: "Cliente", value: "1" },
-            { name: "Funcionário", value: "2" }
-        ]
-    });
-    switch (answer) {
-        case "1":
-            await interacaoCliente()  
-            break;
-        case "2":
-            await interacaoFuncionario()
-            break;
-    }
+        const respostaTipoUsuario = await input({ message: 'O que você é\n1 - Cliente\n2 - Funcionario\n' });
+        switch (respostaTipoUsuario) {
+            case "1":
+                await interacaoCliente()  
+                interacaoValidaUsuario = true;
+                break;
+            case "2":
+                await interacaoFuncionario()
+                interacaoValidaUsuario = true;
+                break;
+            default:
+                console.log("Opção inválida");
+        }
+    };
+   
 }
 
 async function interacaoCliente() {
-    let choices = clientes.map((cliente) => {
-        return { name: cliente.nome, value: cliente }
+    let interacaoValidaUsuario = false;
+    let questaoCliente = "Quem é você?\n"
+    clientes.forEach((cliente) => {
+        questaoCliente += `${cliente.id} - ${cliente.nome}\n`
     });
-    const answer = await select({
-        message: "Quem é você?",
-        choices: choices
-    });
-    console.log(answer);
+    while(!interacaoValidaUsuario){
+        
+        const respostaCliente = await input({ message: questaoCliente });
+        try {
+            let resposta = parseInt(respostaCliente);
+            if(resposta > 0 && resposta <= clientes.length){ 
+                interacaoValidaUsuario = true;
+                let clienteSelecionado = clientes[resposta - 1];
+                console.log(`Olá ${clienteSelecionado.nome}`);
+            } else {
+                console.log("Opção inválida");
+                break;
+            }
+        } catch(error) {
+            console.log("Opção inválida")
+        }
+
+    }
+    // interacaoAcoesCliente()
 }
 
 
@@ -77,7 +96,7 @@ async function interacaoFuncionario() {
         message: "Quem é você?",
         choices: choices
     });
-    console.log(answer);
+
 }
 
 main();
