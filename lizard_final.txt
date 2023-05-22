@@ -35,28 +35,30 @@
        1      1      9      0       1 (anonymous)@74-74@src/index.ts
        4      1     17      0       4 (anonymous)@88-91@src/index.ts
       28      5    185      1      36 interacaoAprovarOrcamento@59-94@src/index.ts
-       1      1     10      0       1 (anonymous)@97-97@src/index.ts
-       3      1     21      0       3 (anonymous)@102-104@src/index.ts
-       1      1      9      0       1 (anonymous)@108-108@src/index.ts
-      49     11    268      1      56 interacaoAndamentoServico@96-151@src/index.ts
-      32      6    127      1      32 interacaoAcoesCliente@153-184@src/index.ts
-       3      1     21      0       3 (anonymous)@190-192@src/index.ts
-      25      6    161      0      30 interacaoCliente@186-215@src/index.ts
-       1      1      8      0       1 (anonymous)@225-225@src/index.ts
-       3      1     21      0       3 (anonymous)@225-227@src/index.ts
-       1      1      6      0       1 (anonymous)@240-240@src/index.ts
-       4      1     16      0       4 (anonymous)@242-245@src/index.ts
-      30      7    226      1      36 criarOrcamento@222-257@src/index.ts
-       1      1      8      0       1 (anonymous)@263-263@src/index.ts
-       3      1     21      0       3 (anonymous)@264-266@src/index.ts
-       4      1     16      0       4 (anonymous)@268-271@src/index.ts
-       1      1      6      0       1 (anonymous)@278-278@src/index.ts
-       4      1     16      0       4 (anonymous)@284-287@src/index.ts
-      29      5    181      1      39 finalizarServico@258-296@src/index.ts
-       3      1     21      0       3 (anonymous)@301-303@src/index.ts
-      28      8    161      1      33 interacaoAcaoFuncionario@297-329@src/index.ts
-       3      1     21      0       3 (anonymous)@335-337@src/index.ts
-      26      6    160      0      30 interacaoFuncionario@331-360@src/index.ts
+       3      1     21      0       3 (anonymous)@98-100@src/index.ts
+       5      1     34      2       7 constroiInteracaoParaArray@96-102@src/index.ts
+       1      1      9      0       1 (anonymous)@114-114@src/index.ts
+      42     10    231      2      46 interacaoAndamentoServico@104-149@src/index.ts
+       1      1     10      0       1 (anonymous)@152-152@src/index.ts
+       3      1     18      1       3 buscaOrdensCliente@151-153@src/index.ts
+      38      7    164      1      38 interacaoAcoesCliente@155-192@src/index.ts
+       3      1     21      0       3 (anonymous)@198-200@src/index.ts
+      25      6    161      0      30 interacaoCliente@194-223@src/index.ts
+       1      1      8      0       1 (anonymous)@233-233@src/index.ts
+       3      1     21      0       3 (anonymous)@233-235@src/index.ts
+       1      1      6      0       1 (anonymous)@248-248@src/index.ts
+       4      1     16      0       4 (anonymous)@250-253@src/index.ts
+      30      7    226      1      36 criarOrcamento@230-265@src/index.ts
+       1      1      8      0       1 (anonymous)@271-271@src/index.ts
+       3      1     21      0       3 (anonymous)@272-274@src/index.ts
+       4      1     16      0       4 (anonymous)@276-279@src/index.ts
+       1      1      6      0       1 (anonymous)@286-286@src/index.ts
+       4      1     16      0       4 (anonymous)@292-295@src/index.ts
+      29      5    181      1      39 finalizarServico@266-304@src/index.ts
+       3      1     21      0       3 (anonymous)@309-311@src/index.ts
+      28      8    161      1      33 interacaoAcaoFuncionario@305-337@src/index.ts
+       3      1     21      0       3 (anonymous)@343-345@src/index.ts
+      26      6    160      0      30 interacaoFuncionario@339-368@src/index.ts
 9 file analyzed.
 ==============================================================
 NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
@@ -69,7 +71,7 @@ NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
      31       6.7     1.7       33.0         3     src/model/Funcionario/Funcionario.ts
       8       0.0     0.0        0.0         0     src/constantes/StatusOrdemServico.ts
      25       0.0     0.0        0.0         0     src/dados.ts
-    330      11.2     2.8       66.8        30     src/index.ts
+    337      10.8     2.7       64.2        32     src/index.ts
 
 ===========================================================================================================
 !!!! Warnings (cyclomatic_complexity > 15 or length > 1000 or nloc > 1000000 or parameter_count > 100) !!!!
@@ -80,4 +82,4 @@ NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
 ==========================================================================================
 Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
 ------------------------------------------------------------------------------------------
-       636       8.4     2.5       47.4       56            1      0.02    0.05
+       643       8.2     2.4       46.6       58            1      0.02    0.05

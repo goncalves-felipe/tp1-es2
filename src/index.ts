@@ -93,65 +93,68 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
 
 }
 
-async function interacaoAndamentoServico(cliente: Cliente) {
-    let ordensServicoCliente = ordensServico.filter((ordemServico) => ordemServico.cliente.id == cliente.id);
-    if (ordensServicoCliente.length > 0) {
-        let interacaoValidaAndamentoServico = false;
-        while (!interacaoValidaAndamentoServico) {
-            let questaoAndamentoServico = "Qual ordem de serviço você deseja visualizar?\n"
-            ordensServicoCliente.forEach((ordemServico) => {
-                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao}\n`
-            });
-            console.log("\n");
-            let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
-            try {
-                let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
-                if (ordemServicoSelecionada) {
-                    let descricaoStatus = "";
+function constroiInteracaoParaArray(mensagemBase : string, elementos : any[]) {
+    let interacao = mensagemBase;
+    elementos.forEach((elemento: any) => {
+        interacao += `${elemento.id} - ${elemento.nome}\n`
+    });
+    return interacao;
+}
 
-                    switch (ordemServicoSelecionada.status) {
-                        case StatusOrdemServico.CRIADO:
-                            descricaoStatus = "criado";
-                            break;
-                        case StatusOrdemServico.RECUSADO:
-                            descricaoStatus = "recusado";
-                            break;
-                        case StatusOrdemServico.APROVADO:
-                            descricaoStatus = "aprovado";
-                            break;
-                        case StatusOrdemServico.EM_ANALISE:
-                            descricaoStatus = "em análise";
-                            break;
-                        case StatusOrdemServico.FINALIZADO_SUCESSO:
-                            descricaoStatus = "finalizado com sucesso";
-                            break;
-                        case StatusOrdemServico.FINALIZADO_FALHA:
-                            descricaoStatus = "finalizado com falha";
-                            break;
-
-                    }
-
-                    console.log("\nConsultando ordem de serviço ...")
-                    console.log("\x1b[32m%s\x1b[0m", `\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus}`)
-                    interacaoValidaAndamentoServico = true;
-                    return interacaoAcoesCliente(cliente);
-
-                } else {
-                    console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
-                }
-            } catch (error) {
-                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
-            }
+async function interacaoAndamentoServico(cliente: Cliente, ordensServicoCliente: OrdemServico[]) {
+    let interacaoValidaAndamentoServico = false;
+    while (!interacaoValidaAndamentoServico) {
+        let questaoAndamentoServico = constroiInteracaoParaArray("Qual ordem de serviço você deseja visualizar?\n", ordensServicoCliente);
+        console.log("\n");
+        let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
+        if(Number.isNaN(Number(respostaAndamentoServico))){ 
+            console.log("Opção inválida");
+            continue;
         }
-    } else {
-        console.log("\x1b[31m%s\x1b[0m", "\nVocê não possui nenhuma ordem de serviço\n");
-        return interacaoAcoesCliente(cliente);
-    }
+        let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
+        if (ordemServicoSelecionada) {
+            let descricaoStatus = "";
 
+            switch (ordemServicoSelecionada.status) {
+                case StatusOrdemServico.CRIADO:
+                    descricaoStatus = "criado";
+                    break;
+                case StatusOrdemServico.RECUSADO:
+                    descricaoStatus = "recusado";
+                    break;
+                case StatusOrdemServico.APROVADO:
+                    descricaoStatus = "aprovado";
+                    break;
+                case StatusOrdemServico.EM_ANALISE:
+                    descricaoStatus = "em análise";
+                    break;
+                case StatusOrdemServico.FINALIZADO_SUCESSO:
+                    descricaoStatus = "finalizado com sucesso";
+                    break;
+                case StatusOrdemServico.FINALIZADO_FALHA:
+                    descricaoStatus = "finalizado com falha";
+                    break;
+            }
+
+            console.log("\nConsultando ordem de serviço ...")
+            console.log("\x1b[32m%s\x1b[0m", `\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus}`)
+            interacaoValidaAndamentoServico = true;
+            return interacaoAcoesCliente(cliente);
+
+        } else {
+            console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
+        }
+    
+    }
+}
+
+function buscaOrdensCliente(cliente: Cliente) {
+    return ordensServico.filter((ordemServico) => ordemServico.cliente.id == cliente.id);
 }
 
 async function interacaoAcoesCliente(cliente: Cliente) {
     let interacaoValidaAcoesCliente = false;
+    let ordensCliente = buscaOrdensCliente(cliente);
     while (!interacaoValidaAcoesCliente) {
         let questaoAcoesCliente = "O que você deseja fazer?\n"
         questaoAcoesCliente += "1 - Solicitar serviço\n"
@@ -170,8 +173,13 @@ async function interacaoAcoesCliente(cliente: Cliente) {
                 interacaoValidaAcoesCliente = true;
                 break;
             case "3":
-                interacaoAndamentoServico(cliente);
-                interacaoValidaAcoesCliente = true;
+                if(ordensCliente.length == 0){
+                    console.log("\x1b[31m%s\x1b[0m", "\nVocê não possui nenhuma ordem de serviço\n");
+                    interacaoAcoesCliente(cliente);
+                } else {
+                    interacaoAndamentoServico(cliente, ordensCliente);
+                    interacaoValidaAcoesCliente = true;
+                }
                 break;
             case "4":
                 interacaoValidaAcoesCliente = true;
