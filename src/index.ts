@@ -1,9 +1,11 @@
 import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
 import input from '@inquirer/input';
-import { clientes, funcionarios, ordensServico } from "./dados";
+import { clientes, funcionarios, ordensServico, orcamentos } from "./dados";
 import { StatusOrdemServico } from "./constantes/StatusOrdemServico";
+import { StatusOrcamentos } from "./constantes/StatusOrcamentos";
 import { OrdemServico } from "./model/OrdemServico/OrdemServico";
+import { Orcamento } from "./model/Orcamento/Orcamento";
 
 
 function main(): void {
@@ -43,9 +45,8 @@ async function interacaoSolicitarServico(cliente: Cliente) {
         console.log("\n")
         const produto = await input({ message: "Qual o produto que deseja consertar?" });
         const descricao = await input({ message: "Descreva o serviço que deseja contratar" });
-        const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length + 1)
+        const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length + 1, produto, descricao, cliente)
         if (novaOrdem) {
-            novaOrdem.criarOrdemServico(produto, descricao, cliente);
             ordensServico.push(novaOrdem);
             console.log(`A ordem de serviço '${novaOrdem.descricao}', foi criada com sucesso!`)
             interacaoValidaAndamentoServico = true;
@@ -58,23 +59,23 @@ async function interacaoSolicitarServico(cliente: Cliente) {
 
 async function interacaoAprovarOrcamento(cliente: Cliente) {
     console.log("\nBuscanco orçamentos pendentes de aprovação ...")
-    let ordensServicoCliente = ordensServico.filter(
-        (ordemServico) => (ordemServico.cliente.id == cliente.id
-            && ordemServico.status == StatusOrdemServico.EM_ANALISE)
+    let orcamentosServicoCliente = orcamentos.filter(
+        (orcamento) => (orcamento.ordemServico.cliente.id == cliente.id
+            && orcamento.status == StatusOrcamentos.AGUARDANDO_CLIENTE)
     );
-    if (ordensServicoCliente.length > 0) {
+    if (orcamentosServicoCliente.length > 0) {
         let interacaoValidaAndamentoServico = false;
         while (!interacaoValidaAndamentoServico) {
-            let questaoAndamentoServico = "Selecione o orçamento que deseja aprovar\n"
-            ordensServicoCliente.forEach((ordemServico) => {
-                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao} - Previsão de horas gastas: ${ordemServico.horasPrevistas} - R$${ordemServico.valorOrcamento}\n`
+            let questaoOrcamento = "Selecione o orçamento que deseja aprovar\n"
+            orcamentosServicoCliente.forEach((orcamento) => {
+                questaoOrcamento += `${orcamento.id} - ${orcamento.ordemServico.descricao} - Previsão de horas gastas: ${orcamento.horasPrevistas} - R$${orcamento.valorOrcamento}\n`
             });
-            let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
+            let respostaOrcamento = await input({ message: questaoOrcamento });
             try {
-                let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
-                if (ordemServicoSelecionada) {
-                    ordemServicoSelecionada.aprovarOrdemServico();
-                    console.log(`O orçamento relacionado a ordem de serviço ${ordemServicoSelecionada.id}, de ${ordemServicoSelecionada.valorOrcamento} reias, foi aprovado com sucesso!`)
+                let orcamentoSelecionada = orcamentosServicoCliente.find((orcamento) => orcamento.id == Number(respostaOrcamento));
+                if (orcamentoSelecionada) {
+                    orcamentoSelecionada.aprovarOrdemServico();
+                    console.log(`O orçamento relacionado a ordem de serviço ${orcamentoSelecionada.id}, de ${orcamentoSelecionada.valorOrcamento} reias, foi aprovado com sucesso!`)
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
                 } else {
@@ -235,10 +236,11 @@ async function criarOrcamento(funcionario: Funcionario) {
             if (resposta > 0 && resposta <= ordensServico.length) {
                 interacaoValida = true;
                 console.log("\n")
-                const horasPrevistas = await input({ message: 'Horas previstas: ' });
-                const valorOrcamento = await input({ message: 'Valor Orcamento: ' });
-                ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
+                const horasPrevistas: number = + await input({ message: 'Horas previstas: ' });
+                const valorOrcamento: number = + await input({ message: 'Valor Orcamento: ' });
+                const orcamento: Orcamento = new Orcamento(orcamentos.length + 1, valorOrcamento, horasPrevistas, ordensServico.find((ordem) => ordem.id == resposta))
                 console.log("\nAguarde enquanto estamos gerando o orçamento");
+                orcamentos.push(orcamento);
                 setTimeout(() => {
                     console.log("\x1b[32m%s\x1b[0m", "\nOrçamento gerado com sucesso");
                     interacaoAcaoFuncionario(funcionario);
