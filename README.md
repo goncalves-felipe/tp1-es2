@@ -24,3 +24,10 @@ aproveitar ao máximo nosso conhecimento e proficiência.
 - https://github.com/goncalves-felipe/tp1-es2/commit/d4e13dec7f362f66128a6166725491b97a07c51d
 - https://github.com/goncalves-felipe/tp1-es2/commit/82650a82960d478442e913a196533fe52848cbc3
 - https://github.com/goncalves-felipe/tp1-es2/commit/e4152fff4db64c05b2e1ccb69557c9c79a31e502
+
+5. Alterações:
+
+Após analise do lizard_inicial.txt refatoramos as três maiores complexidades que eram:
+- Construtor OrdemServico
+- interacaoAndamentoServico
+- interacaoAcaoFuncionario
