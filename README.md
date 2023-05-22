@@ -9,17 +9,10 @@
 
 2. Explicação do Sistema
 
-O sistema deve dar apoio à gestão de uma oficina de manutenção de
-eletrodomésticos. Os clientes trazem os aparelhos para orçamento, que tem
-prazo para ser fornecido, dependendo do tipo de aparelho. Se o conserto for
-autorizado, o cliente recebe uma previsão de prazo, podendo depois consultar
-o andamento do serviço. O sistema também deve controlar o estoque de
-peças e a distribuição de serviço entre os técnicos de manutenção,
-permitindo calcular os custos de material e de mão de obra, e dando apoio à
-emissão de pedidos de peças aos fornecedores destas. As peças possuem
-diversas características, como tamanho, peso, fabricante e preço do
-fornecedor. Além disso, elas são categorizadas de acordo com o
-eletrodoméstico.
+O sistema foi desenvolvido com o objetivo de oferecer suporte para a gestão de uma oficina de manutenção de eletrodomésticos.
+Os clientes trazem seus aparelhos defeituosos, que passam por uma análise realizada pelos funcionários. Com base nessa análise,
+os funcionários propõem um orçamento, que é apresentado ao cliente para sua análise e consideração. O cliente tem a liberdade de
+aprovar ou recusar a proposta de orçamento, e também pode acompanhar o progresso e andamento do serviço em tempo real.
 
 3. Tecnologias Utilizadas
 
