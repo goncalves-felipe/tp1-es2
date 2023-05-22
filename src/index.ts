@@ -159,7 +159,32 @@ async function criarOrcamento(funcionario: Funcionario) {
     }
 }
 async function finalizarServico() {
-    console.log('criarOrcamento')
+    let questao = "Qual ordem de serviço você deseja finalizar??\n";
+    let interacaoValida = false;
+    let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.EM_ANDAMENTO);
+    ordensAbertas.forEach((ordens) => {
+        questao += `${ordens.id} - ${ordens.descricao}\n`
+    });
+    if (ordensAbertas.length == 0) {
+        console.log('Não existem ordens em andamento');
+        interacaoValida = true;
+    }
+    while (!interacaoValida) {
+        const respostaOrcamento = await input({ message: questao });
+        try {
+            let resposta = parseInt(respostaOrcamento);
+            let ordemASerFinalizada = ordensAbertas.find((ordem) => ordem.id == resposta);
+            if (ordemASerFinalizada != null) {
+                interacaoValida = true;
+                ordemASerFinalizada.finalizarComSucesso();
+            } else {
+                console.log("Opção inválida");
+                break;
+            }
+        } catch (error) {
+            console.log("Opção inválida")
+        }
+    }
 }
 async function interacaoAcaoFuncionario(funcionario: Funcionario) {
 
