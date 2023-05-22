@@ -31,3 +31,7 @@ Após analise do lizard_inicial.txt refatoramos as três maiores complexidades q
 - Construtor OrdemServico
 - interacaoAndamentoServico
 - interacaoAcaoFuncionario
+
+6. Execução do projeto
+npm install
+npm start
