@@ -13,7 +13,7 @@ async function interacaoUsuario() {
     let interacaoValidaUsuario = false;
     while (!interacaoValidaUsuario) {
 
-        const respostaTipoUsuario = await input({ message: 'O que você é\n1 - Cliente\n2 - Funcionario\n' });
+        const respostaTipoUsuario = await input({ message: 'O que você é\n1 - Cliente\n2 - Funcionario\n3 - Sair\n' });
         switch (respostaTipoUsuario) {
 
             case "1":
@@ -22,6 +22,10 @@ async function interacaoUsuario() {
                 break;
             case "2":
                 await interacaoFuncionario()
+                interacaoValidaUsuario = true;
+                break;
+            case "3":
+                console.log("Saindo...");
                 interacaoValidaUsuario = true;
                 break;
             default:
@@ -94,6 +98,7 @@ async function interacaoCliente() {
     clientes.forEach((cliente) => {
         questaoCliente += `${cliente.id} - ${cliente.nome}\n`
     });
+    questaoCliente += `${clientes.length + 1} - Voltar\n`
 
     while (!interacaoValidaUsuario) {
 
@@ -104,6 +109,9 @@ async function interacaoCliente() {
                 interacaoValidaUsuario = true;
                 let clienteSelecionado = clientes[resposta - 1];
                 await interacaoAcoesCliente(clienteSelecionado);
+            } else if(resposta == clientes.length + 1){
+                interacaoValidaUsuario = true;
+                interacaoUsuario();
             } else {
                 console.log("Opção inválida");
                 break;
@@ -116,10 +124,11 @@ async function interacaoCliente() {
 }
 const opcoesFuncionario = [
     { id: 1, descricao: "Criar Orcamento" },
-    { id: 2, descricao: "Finalizar Serviço" }
+    { id: 2, descricao: "Finalizar Serviço" },
+    { id: 3, descricao: "Voltar"}
 ]
 
-async function criarOrcamento() {
+async function criarOrcamento(funcionario: Funcionario) {
     let questao = "Para qual ordem de serviço você deseja criar um orçamento?\n";
     let interacaoValida = false;
     ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.CRIADO).forEach((ordens) => {
@@ -135,6 +144,11 @@ async function criarOrcamento() {
                 const horasPrevistas = await input({ message: 'Horas previstas: ' });
                 const valorOrcamento = await input({ message: 'Valor Orcamento: ' });
                 ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
+                console.log("\nAguarde enquanto estamos gerando o orçamento\n");
+                setTimeout(() => {
+                    console.log("\1x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
+                    interacaoAcaoFuncionario(funcionario);
+                }, 1000);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -187,9 +201,12 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
             if (resposta > 0 && resposta <= opcoesFuncionario.length) {
                 interacaoValida = true;
                 if (resposta == 1) {
-                    criarOrcamento();
+                    criarOrcamento(funcionario);
                 } else if (resposta == 2) {
                     finalizarServico();
+                } else if(resposta == 3) {
+                    interacaoValida = true;
+                    return interacaoFuncionario();
                 }
             } else {
                 console.log("Opção inválida");
@@ -208,6 +225,7 @@ async function interacaoFuncionario() {
     funcionarios.forEach((funcionario) => {
         questaoFuncionario += `${funcionario.id} - ${funcionario.nome}\n`
     });
+    questaoFuncionario += `${funcionarios.length + 1} - Voltar\n`
 
     while (!interacaoValidaFuncionario) {
 
@@ -218,6 +236,9 @@ async function interacaoFuncionario() {
                 interacaoValidaFuncionario = true;
                 let funcionarioSelecionado = funcionarios[resposta - 1];
                 await interacaoAcaoFuncionario(funcionarioSelecionado);
+            } else if (resposta == funcionarios.length + 1) {
+                interacaoValidaFuncionario = true;
+                return interacaoUsuario();
             } else {
                 console.log("Opção inválida");
                 break;
