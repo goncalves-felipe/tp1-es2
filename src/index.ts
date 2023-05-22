@@ -134,6 +134,7 @@ async function criarOrcamento(funcionario: Funcionario) {
     ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.CRIADO).forEach((ordens) => {
         questao += `${ordens.id} - ${ordens.descricao}\n`
     });
+    questao += `${ordensServico.length + 1} - Voltar\n`
 
     while (!interacaoValida) {
         const respostaOrcamento = await input({ message: questao });
@@ -149,6 +150,9 @@ async function criarOrcamento(funcionario: Funcionario) {
                     console.log("\x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
                     interacaoAcaoFuncionario(funcionario);
                 }, 1000);
+            } else if(resposta == ordensServico.length + 1){
+                interacaoValida = true;
+                interacaoAcaoFuncionario(funcionario);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -158,7 +162,8 @@ async function criarOrcamento(funcionario: Funcionario) {
         }
     }
 }
-async function finalizarServico() {
+async function finalizarServico(funcionario: Funcionario) {
+    console.log("\nBuscando ordens de serviço ...\n");
     let questao = "Qual ordem de serviço você deseja finalizar??\n";
     let interacaoValida = false;
     let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.EM_ANDAMENTO);
@@ -166,8 +171,11 @@ async function finalizarServico() {
         questao += `${ordens.id} - ${ordens.descricao}\n`
     });
     if (ordensAbertas.length == 0) {
-        console.log('Não existem ordens em andamento');
-        interacaoValida = true;
+        setTimeout(() => {
+            console.log("\x1b[31m%s\x1b[0m","\nNão existem ordens em andamento\n");
+            interacaoAcaoFuncionario(funcionario);
+        }, 1000);
+        return
     }
     while (!interacaoValida) {
         const respostaOrcamento = await input({ message: questao });
@@ -177,6 +185,11 @@ async function finalizarServico() {
             if (ordemASerFinalizada != null) {
                 interacaoValida = true;
                 ordemASerFinalizada.finalizarComSucesso();
+                console.log("\nAguarde enquanto estamos finalizando o serviço\n");
+                setTimeout(() => {
+                    console.log("\x1b[32m%s\x1b[0m","\nServiço finalizado com sucesso\n");
+                    interacaoAcaoFuncionario(funcionario);
+                }, 1000);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -203,7 +216,7 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
                 if (resposta == 1) {
                     criarOrcamento(funcionario);
                 } else if (resposta == 2) {
-                    finalizarServico();
+                    finalizarServico(funcionario);
                 } else if(resposta == 3) {
                     interacaoValida = true;
                     return interacaoFuncionario();
