@@ -6,35 +6,21 @@ export class OrdemServico {
   private _produto: string;
   private _descricao: string;
   private _cliente: Cliente;
-  private _horasPrevistas: number;
-  private _valorOrcamento: number;
-  private _valorFinal: number;
-  private _valorPago: number;
+  private _valorFinal: number = 0;
+  private _valorPago: number = 0;
   private _status: StatusOrdemServico;
-  private _entregue: boolean;
 
   constructor(
     id?: number,
     produto?: string,
     descricao?: string,
     cliente?: Cliente,
-    horasPrevistas?: number,
-    valorOrcamento?: number,
-    valorFinal?: number,
-    valorPago?: number,
-    status?: StatusOrdemServico,
-    entregue?: boolean
   ) {
     this._id = id ?? 0;
     this._produto = produto ?? "";
     this._descricao = descricao ?? "";
     this._cliente = cliente ?? new Cliente();
-    this._horasPrevistas = horasPrevistas ?? 0;
-    this._valorOrcamento = valorOrcamento ?? 0;
-    this._valorFinal = valorFinal ?? 0;
-    this._valorPago = valorPago ?? 0;
-    this._status = status ?? StatusOrdemServico.CRIADO;
-    this._entregue = !!entregue;
+    this._status = StatusOrdemServico.CRIADO;
   }
 
   public get id(): number {
@@ -53,14 +39,6 @@ export class OrdemServico {
     return this._cliente;
   }
 
-  public get horasPrevistas(): number {
-    return this._horasPrevistas;
-  }
-
-  public get valorOrcamento(): number {
-    return this._valorOrcamento;
-  }
-
   public get valorFinal(): number {
     return this._valorFinal;
   }
@@ -71,10 +49,6 @@ export class OrdemServico {
 
   public get status(): StatusOrdemServico {
     return this._status;
-  }
-
-  public get entregue(): boolean {
-    return this._entregue;
   }
 
   public set id(value: number) {
@@ -94,14 +68,6 @@ export class OrdemServico {
     this._cliente = value;
   }
 
-  public set horasPrevistas(value: number) {
-    this._horasPrevistas = value;
-  }
-
-  public set valorOrcamento(value: number) {
-    this._valorOrcamento = value;
-  }
-
   public set valorFinal(value: number) {
     this._valorFinal = value;
   }
@@ -114,37 +80,8 @@ export class OrdemServico {
     this._status = value;
   }
 
-  public set entregue(value: boolean) {
-    this._entregue = value;
-  }
-
-  public criarOrdemServico(
-    produto: string,
-    descricao: string,
-    cliente: Cliente
-  ): void {
-    this._produto = produto;
-    this._descricao = descricao;
-    this._cliente = cliente;
-    this._status = StatusOrdemServico.CRIADO;
-  }
-
   public recusarOrdemServico(): void {
     this.status = StatusOrdemServico.RECUSADO;
-  }
-
-  public aprovarOrdemServico(): void {
-    this._valorFinal = this._valorOrcamento;
-    this.status = StatusOrdemServico.APROVADO;
-  }
-
-  public criarOrcamento(
-    horasPrevistas: number,
-    valorOrcamento: number
-  ): void {
-    this._horasPrevistas = horasPrevistas;
-    this._valorOrcamento = valorOrcamento;
-    this.status = StatusOrdemServico.EM_ANALISE;
   }
 
   public finalizarComSucesso(): void {
@@ -153,10 +90,6 @@ export class OrdemServico {
 
   public finalizarComFalha(): void {
     this._status = StatusOrdemServico.FINALIZADO_FALHA;
-  }
-
-  public entregarProduto(): void {
-    this._entregue = true;
   }
 
   public pagar(valor: number): void {

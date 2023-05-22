@@ -3,6 +3,7 @@ import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
 import { ServicoFuncionario } from "./model/ServicoFuncionario/ServicoAlocado";
 import { OrdemServico } from "./model/OrdemServico/OrdemServico";
+import { Orcamento } from "./model/Orcamento/Orcamento";
 
 const fornecedores: Fornecedor[] = [
     new Fornecedor(1, "João da Silva", "joaodasilva@email.teste", "+99(99)99999-9999", "11.111.111/0001-11"),
@@ -30,4 +31,9 @@ const ordensServico: OrdemServico[] = [
     new OrdemServico(2, "Troca de borracha", "Troca da borracha da geladeira", clientes[1])
 ];
 
-export { fornecedores, funcionarios, clientes, servicosFuncionario, ordensServico };
+const orcamentos: Orcamento[] = [
+    new Orcamento(1, 1000, 5, ordensServico[0]),
+    new Orcamento(2, 700, 3, ordensServico[1])
+];
+
+export { fornecedores, funcionarios, clientes, servicosFuncionario, ordensServico, orcamentos };
