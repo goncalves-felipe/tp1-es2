@@ -128,7 +128,7 @@ const opcoesFuncionario = [
     { id: 3, descricao: "Voltar"}
 ]
 
-async function criarOrcamento() {
+async function criarOrcamento(funcionario: Funcionario) {
     let questao = "Para qual ordem de serviço você deseja criar um orçamento?\n";
     let interacaoValida = false;
     ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.CRIADO).forEach((ordens) => {
@@ -144,6 +144,11 @@ async function criarOrcamento() {
                 const horasPrevistas = await input({ message: 'Horas previstas: ' });
                 const valorOrcamento = await input({ message: 'Valor Orcamento: ' });
                 ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
+                console.log("\nAguarde enquanto estamos gerando o orçamento\n");
+                setTimeout(() => {
+                    console.log("\1x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
+                    interacaoAcaoFuncionario(funcionario);
+                }, 1000);
             } else {
                 console.log("Opção inválida");
                 break;
@@ -171,7 +176,7 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
             if (resposta > 0 && resposta <= opcoesFuncionario.length) {
                 interacaoValida = true;
                 if (resposta == 1) {
-                    criarOrcamento();
+                    criarOrcamento(funcionario);
                 } else if (resposta == 2) {
                     finalizarServico();
                 } else if(resposta == 3) {
