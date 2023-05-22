@@ -19,3 +19,8 @@ aprovar ou recusar a proposta de orçamento, e também pode acompanhar o progres
 Neste projeto, optamos por utilizar Node com TypeScript, pois estas tecnologias
 estão alinhadas com as habilidades e experiências dos autores, permitindo-nos
 aproveitar ao máximo nosso conhecimento e proficiência.
+
+4. Commits
+- https://github.com/goncalves-felipe/tp1-es2/commit/d4e13dec7f362f66128a6166725491b97a07c51d
+- https://github.com/goncalves-felipe/tp1-es2/commit/82650a82960d478442e913a196533fe52848cbc3
+- https://github.com/goncalves-felipe/tp1-es2/commit/e4152fff4db64c05b2e1ccb69557c9c79a31e502
