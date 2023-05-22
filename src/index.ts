@@ -43,7 +43,6 @@ async function interacaoSolicitarServico(cliente: Cliente) {
         console.log("\n")
         const produto = await input({ message: "Qual o produto que deseja consertar?" });
         const descricao = await input({ message: "Descreva o serviço que deseja contratar" });
-        // FIX product number
         const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length + 1)
         if (novaOrdem) {
             novaOrdem.criarOrdemServico(produto, descricao, cliente);
