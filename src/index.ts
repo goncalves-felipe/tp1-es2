@@ -47,6 +47,7 @@ async function interacaoSolicitarServico(cliente: Cliente) {
         const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length+1)
         if (novaOrdem) {
             novaOrdem.criarOrdemServico(produto, descricao, cliente);
+            ordensServico.push(novaOrdem);
             console.log(`A ordem de serviço '${novaOrdem.descricao}', foi criada com sucesso!`)
             interacaoValidaAndamentoServico = true;
             return interacaoAcoesCliente(cliente);
@@ -136,7 +137,7 @@ async function interacaoAndamentoServico(cliente: Cliente) {
                     }
 
                     console.log("\nConsultando ordem de serviço ...")
-                    console.log("\x1b[32m%s\x1b[0m",`\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus} e possui o valor de R$${ordemServicoSelecionada.valorFinal}. ${ordemServicoSelecionada.funcionariosAlocados.length > 0 ? "Os funcionários alocados são: \n" + ordemServicoSelecionada.funcionariosAlocados.map((servicoFuncionario) => servicoFuncionario.funcionario.nome).join(", ") + "\n" : "\n"}`)
+                    console.log("\x1b[32m%s\x1b[0m",`\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus}`)
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
                     
@@ -207,10 +208,9 @@ async function interacaoCliente() {
                 await interacaoAcoesCliente(clienteSelecionado);
             } else if (resposta == clientes.length + 1) {
                 interacaoValidaUsuario = true;
-                interacaoUsuario();
+                await interacaoUsuario();
             } else {
                 console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
-                break;
             }
         } catch (error) {
             console.log("\n", "\x1b[31m%s\x1b[0m", "Opção inválida")

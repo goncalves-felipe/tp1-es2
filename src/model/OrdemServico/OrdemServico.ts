@@ -160,7 +160,7 @@ export class OrdemServico {
     this._produto = produto;
     this._descricao = descricao;
     this._cliente = cliente;
-    this._status = StatusOrdemServico.EM_ANALISE;
+    this._status = StatusOrdemServico.CRIADO;
   }
 
   public recusarOrdemServico(): void {
@@ -168,6 +168,7 @@ export class OrdemServico {
   }
 
   public aprovarOrdemServico(): void {
+    this._valorFinal = this._valorOrcamento;
     this.status = StatusOrdemServico.APROVADO;
   }
 
@@ -176,7 +177,7 @@ export class OrdemServico {
     valorOrcamento: number
   ): void {
     this._horasPrevistas = horasPrevistas;
-    this._valorFinal = valorOrcamento;
+    this._valorOrcamento = valorOrcamento;
     this.status = StatusOrdemServico.EM_ANALISE;
   }
 
