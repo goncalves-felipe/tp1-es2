@@ -18,11 +18,11 @@ async function interacaoUsuario() {
         switch (respostaTipoUsuario) {
 
             case "1":
-                await interacaoCliente()
+                interacaoCliente()
                 interacaoValidaUsuario = true;
                 break;
             case "2":
-                await interacaoFuncionario()
+                interacaoFuncionario()
                 interacaoValidaUsuario = true;
                 break;
             case "3":
@@ -162,15 +162,15 @@ async function interacaoAcoesCliente(cliente: Cliente) {
         const respostaAcoesCliente = await input({ message: questaoAcoesCliente });
         switch (respostaAcoesCliente) {
             case "1":
-                await interacaoSolicitarServico(cliente);
+                interacaoSolicitarServico(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             case "2":
-                await interacaoAprovarOrcamento(cliente);
+                interacaoAprovarOrcamento(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             case "3":
-                await interacaoAndamentoServico(cliente);
+                interacaoAndamentoServico(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             case "4":
@@ -200,10 +200,10 @@ async function interacaoCliente() {
             if (resposta > 0 && resposta <= clientes.length) {
                 interacaoValidaUsuario = true;
                 let clienteSelecionado = clientes[resposta - 1];
-                await interacaoAcoesCliente(clienteSelecionado);
+                interacaoAcoesCliente(clienteSelecionado);
             } else if (resposta == clientes.length + 1) {
                 interacaoValidaUsuario = true;
-                await interacaoUsuario();
+                interacaoUsuario();
             } else {
                 console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
             }
@@ -345,7 +345,7 @@ async function interacaoFuncionario() {
             if (resposta > 0 && resposta <= funcionarios.length) {
                 interacaoValidaFuncionario = true;
                 let funcionarioSelecionado = funcionarios[resposta - 1];
-                await interacaoAcaoFuncionario(funcionarioSelecionado);
+                interacaoAcaoFuncionario(funcionarioSelecionado);
             } else if (resposta == funcionarios.length + 1) {
                 interacaoValidaFuncionario = true;
                 return interacaoUsuario();
