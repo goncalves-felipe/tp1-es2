@@ -19,7 +19,7 @@ const pecas: Peca[] = [
 
 const funcionarios: Funcionario[] = [
     new Funcionario(1, "Pedro Silva", "pedrosilva@email.teste", "+99(99)99999-9999", 10, new Date()),
-    new Funcionario(1, "Lucas Henrique", "lucashenrique@email.teste", "+99(99)99999-9999", 11, new Date()),
+    new Funcionario(2, "Lucas Henrique", "lucashenrique@email.teste", "+99(99)99999-9999", 11, new Date()),
 ];
 
 const clientes: Cliente[] = [
@@ -27,13 +27,14 @@ const clientes: Cliente[] = [
     new Cliente(2, "Antônio", "+99(99)99999-9999", "Rua 10 nro 20, bairro 30, cidade 40")
 ];
 
-const servicosFuncionario : ServicoFuncionario[] = [
+const servicosFuncionario: ServicoFuncionario[] = [
     new ServicoFuncionario(funcionarios[0], 10),
 ];
 
 
 const ordensServico: OrdemServico[] = [
-    new OrdemServico(1, "Motor de Geladeira", "Troca do motor de geladeira", [servicosFuncionario[0]], clientes[0], 1, [pecas[0]], [], 100, 0, 0, 0, false),
+    new OrdemServico(1, "Reparo de geladeira", "Reparo no motor da geladeira", [], clientes[0]),
+    new OrdemServico(2, "Troca de borracha", "Troca da borracha da geladeira", [], clientes[1])
 ];
 
 export { fornecedores, pecas, funcionarios, clientes, servicosFuncionario, ordensServico };
