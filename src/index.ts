@@ -39,7 +39,8 @@ async function interacaoUsuario() {
 async function interacaoSolicitarServico(cliente: Cliente) {
 
     let interacaoValidaAndamentoServico = false;
-    while (!interacaoValidaAndamentoServico) {        
+    while (!interacaoValidaAndamentoServico) {       
+        console.log("\n") 
         const produto = await input({ message: "Qual o produto que deseja consertar?" });
         const descricao = await input({ message: "Descreva o serviço que deseja contratar" });
         // FIX product number
@@ -56,6 +57,7 @@ async function interacaoSolicitarServico(cliente: Cliente) {
 }
 
 async function interacaoAprovarOrcamento(cliente: Cliente) {
+    console.log("\nBuscanco orçamentos pendentes de aprovação ...")
     let ordensServicoCliente = ordensServico.filter(
         (ordemServico) => (ordemServico.cliente.id == cliente.id
                         && (ordemServico.status == StatusOrdemServico.APROVADO
@@ -84,8 +86,10 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
             }
         }
     } else {
-        console.log("\nVocê não possui nenhum orçamento pendente\n");
-        return interacaoAcoesCliente(cliente);
+        setTimeout(() => {
+            console.log("\x1b[31m%s\x1b[0m", "\nVocê não possui nenhum orçamento pendente");
+            return interacaoAcoesCliente(cliente);
+        }, 1000);
     }
 
 }
@@ -99,13 +103,43 @@ async function interacaoAndamentoServico(cliente: Cliente) {
             ordensServicoCliente.forEach((ordemServico) => {
                 questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao}\n`
             });
+            console.log("\n");
             let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
             try {
                 let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
                 if (ordemServicoSelecionada) {
-                    console.log(`A ordem de serviço ${ordemServicoSelecionada.id} está ${ordemServicoSelecionada.status} e possui o valor de R$${ordemServicoSelecionada.valorFinal}. ${ordemServicoSelecionada.funcionariosAlocados.length > 0 ? "Os funcionários alocados são: \n" + ordemServicoSelecionada.funcionariosAlocados.map((servicoFuncionario) => servicoFuncionario.funcionario.nome).join(", ") + "\n" : "\n"}`)
+                    let descricaoStatus = "";
+
+                    switch (ordemServicoSelecionada.status) {
+                        case StatusOrdemServico.CRIADO:
+                            descricaoStatus = "criado";
+                            break;
+                        case StatusOrdemServico.RECUSADO:
+                            descricaoStatus = "recusado";
+                            break;
+                        case StatusOrdemServico.APROVADO:
+                            descricaoStatus = "aprovado";
+                            break;
+                        case StatusOrdemServico.EM_ANALISE:
+                            descricaoStatus = "em análise";
+                            break;
+                        case StatusOrdemServico.EM_ANDAMENTO:
+                            descricaoStatus = "em andamento";
+                            break;
+                        case StatusOrdemServico.FINALIZADO_SUCESSO:
+                            descricaoStatus = "finalizado com sucesso";
+                            break;
+                        case StatusOrdemServico.FINALIZADO_FALHA:
+                            descricaoStatus = "finalizado com falha";
+                            break;
+
+                    }
+
+                    console.log("\nConsultando ordem de serviço ...")
+                    console.log("\x1b[32m%s\x1b[0m",`\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus} e possui o valor de R$${ordemServicoSelecionada.valorFinal}. ${ordemServicoSelecionada.funcionariosAlocados.length > 0 ? "Os funcionários alocados são: \n" + ordemServicoSelecionada.funcionariosAlocados.map((servicoFuncionario) => servicoFuncionario.funcionario.nome).join(", ") + "\n" : "\n"}`)
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
+                    
                 } else {
                     console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 }
@@ -114,7 +148,7 @@ async function interacaoAndamentoServico(cliente: Cliente) {
             }
         }
     } else {
-        console.log("\nVocê não possui nenhuma ordem de serviço\n");
+        console.log("\x1b[31m%s\x1b[0m", "\nVocê não possui nenhuma ordem de serviço\n");
         return interacaoAcoesCliente(cliente);
     }
 
@@ -127,6 +161,8 @@ async function interacaoAcoesCliente(cliente: Cliente) {
         questaoAcoesCliente += "1 - Solicitar serviço\n"
         questaoAcoesCliente += "2 - Aprovar orçamento\n"
         questaoAcoesCliente += "3 - Visualizar andamento do serviço\n"
+        questaoAcoesCliente += "4 - Voltar\n"
+        console.log("\n")
         const respostaAcoesCliente = await input({ message: questaoAcoesCliente });
         switch (respostaAcoesCliente) {
             case "1":
@@ -141,6 +177,10 @@ async function interacaoAcoesCliente(cliente: Cliente) {
                 await interacaoAndamentoServico(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
+            case "4":
+                interacaoValidaAcoesCliente = true;
+                interacaoCliente();
+                return
             default:
                 console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         }
