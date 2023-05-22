@@ -2,6 +2,7 @@ import { Funcionario } from "./model/Funcionario/Funcionario";
 import { Cliente } from "./model/Cliente/Cliente";
 import input from '@inquirer/input';
 import { clientes, funcionarios, ordensServico } from "./dados";
+import { StatusOrdemServico } from "./constantes/StatusOrdemServico";
 
 
 function main(): void {
@@ -119,7 +120,29 @@ const opcoesFuncionario = [
 ]
 
 async function criarOrcamento() {
-    console.log('criarOrcamento')
+    let questao = "Para qual ordem de serviço você deseja criar um orçamento?\n";
+    let interacaoValida = false;
+    ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.CRIADO).forEach((ordens) => {
+        questao += `${ordens.id} - ${ordens.descricao}\n`
+    });
+
+    while (!interacaoValida) {
+        const respostaOrcamento = await input({ message: questao });
+        try {
+            let resposta = parseInt(respostaOrcamento);
+            if (resposta > 0 && resposta <= ordensServico.length) {
+                interacaoValida = true;
+                const horasPrevistas = await input({ message: 'Horas previstas: ' });
+                const valorOrcamento = await input({ message: 'Valor Orcamento: ' });
+                ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
+            } else {
+                console.log("Opção inválida");
+                break;
+            }
+        } catch (error) {
+            console.log("Opção inválida")
+        }
+    }
 }
 async function finalizarServico() {
     console.log('criarOrcamento')
