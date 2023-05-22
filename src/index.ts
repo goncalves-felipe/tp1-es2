@@ -3,6 +3,7 @@ import { Cliente } from "./model/Cliente/Cliente";
 import input from '@inquirer/input';
 import { clientes, funcionarios, ordensServico } from "./dados";
 import { StatusOrdemServico } from "./constantes/StatusOrdemServico";
+import { OrdemServico } from "./model/OrdemServico/OrdemServico";
 
 
 function main(): void {
@@ -32,6 +33,60 @@ async function interacaoUsuario() {
                 console.log("Opção inválida");
         }
     };
+
+}
+
+async function interacaoSolicitarServico(cliente: Cliente) {
+
+    let interacaoValidaAndamentoServico = false;
+    while (!interacaoValidaAndamentoServico) {        
+        const produto = await input({ message: "Qual o produto que deseja consertar?" });
+        const descricao = await input({ message: "Descreva o serviço que deseja contratar" });
+        // FIX product number
+        const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length+1)
+        if (novaOrdem) {
+            novaOrdem.criarOrdemServico(produto, descricao, cliente);
+            console.log(`A ordem de serviço '${novaOrdem.descricao}', foi criada com sucesso!`)
+            interacaoValidaAndamentoServico = true;
+            return interacaoAcoesCliente(cliente);
+        } else {
+            console.log("Opção inválida");
+        }
+    }
+}
+
+async function interacaoAprovarOrcamento(cliente: Cliente) {
+    let ordensServicoCliente = ordensServico.filter(
+        (ordemServico) => (ordemServico.cliente.id == cliente.id
+                        && (ordemServico.status == StatusOrdemServico.APROVADO
+                        ||  ordemServico.status == StatusOrdemServico.EM_ANALISE))
+    );
+    if (ordensServicoCliente.length > 0) {
+        let interacaoValidaAndamentoServico = false;
+        while (!interacaoValidaAndamentoServico) {
+            let questaoAndamentoServico = "Selecione o orçamento que deseja aprovar\n"
+            ordensServicoCliente.forEach((ordemServico) => {
+                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao} R$${ordemServico.valorOrcamento}\n`
+            });
+            let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
+            try {
+                let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
+                if (ordemServicoSelecionada) {
+                    ordemServicoSelecionada.aprovarOrdemServico();
+                    console.log(`O orçamento relacionado a ordem de serviço ${ordemServicoSelecionada.id}, de ${ordemServicoSelecionada.valorOrcamento} reias, foi aprovado com sucesso!`)
+                    interacaoValidaAndamentoServico = true;
+                    return interacaoAcoesCliente(cliente);
+                } else {
+                    console.log("Opção inválida");
+                }
+            } catch (error) {
+                console.log("Opção inválida");
+            }
+        }
+    } else {
+        console.log("\nVocê não possui nenhum orçamento pendente\n");
+        return interacaoAcoesCliente(cliente);
+    }
 
 }
 
@@ -69,17 +124,17 @@ async function interacaoAcoesCliente(cliente: Cliente) {
     let interacaoValidaAcoesCliente = false;
     while (!interacaoValidaAcoesCliente) {
         let questaoAcoesCliente = "O que você deseja fazer?\n"
-        questaoAcoesCliente += "1 - Solicitar orçamento\n"
+        questaoAcoesCliente += "1 - Solicitar serviço\n"
         questaoAcoesCliente += "2 - Aprovar orçamento\n"
         questaoAcoesCliente += "3 - Visualizar andamento do serviço\n"
         const respostaAcoesCliente = await input({ message: questaoAcoesCliente });
         switch (respostaAcoesCliente) {
             case "1":
-                console.log("Solicitar orçamento");
+                await interacaoSolicitarServico(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             case "2":
-                console.log("Aprovar orçamento");
+                await interacaoAprovarOrcamento(cliente);
                 interacaoValidaAcoesCliente = true;
                 break;
             case "3":
