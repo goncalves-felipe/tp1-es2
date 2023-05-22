@@ -3,7 +3,6 @@ export enum StatusOrdemServico {
   EM_ANALISE,
   APROVADO,
   RECUSADO,
-  EM_ANDAMENTO,
   FINALIZADO_SUCESSO,
   FINALIZADO_FALHA,
 }

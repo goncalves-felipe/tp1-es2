@@ -1,6 +1,5 @@
 import { StatusOrdemServico } from "../../constantes/StatusOrdemServico";
 import { Cliente } from "../Cliente/Cliente";
-import { ServicoFuncionario } from "../ServicoFuncionario/ServicoAlocado";
 
 export class OrdemServico {
   private _id: number;

@@ -69,7 +69,7 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
         while (!interacaoValidaAndamentoServico) {
             let questaoAndamentoServico = "Selecione o orçamento que deseja aprovar\n"
             ordensServicoCliente.forEach((ordemServico) => {
-                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao} R$${ordemServico.valorOrcamento}\n`
+                questaoAndamentoServico += `${ordemServico.id} - ${ordemServico.descricao} - Previsão de horas gastas: ${ordemServico.horasPrevistas} - R$${ordemServico.valorOrcamento}\n`
             });
             let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
             try {
@@ -124,9 +124,6 @@ async function interacaoAndamentoServico(cliente: Cliente) {
                         case StatusOrdemServico.EM_ANALISE:
                             descricaoStatus = "em análise";
                             break;
-                        case StatusOrdemServico.EM_ANDAMENTO:
-                            descricaoStatus = "em andamento";
-                            break;
                         case StatusOrdemServico.FINALIZADO_SUCESSO:
                             descricaoStatus = "finalizado com sucesso";
                             break;
@@ -137,7 +134,7 @@ async function interacaoAndamentoServico(cliente: Cliente) {
                     }
 
                     console.log("\nConsultando ordem de serviço ...")
-                    console.log("\x1b[32m%s\x1b[0m",`\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus}`)
+                    console.log("\x1b[32m%s\x1b[0m", `\nA ordem de serviço ${ordemServicoSelecionada.id} está ${descricaoStatus}`)
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
 
@@ -265,7 +262,7 @@ async function finalizarServico(funcionario: Funcionario) {
     console.log("\nBuscando ordens de serviço ...\n");
     let questao = "Qual ordem de serviço você deseja finalizar??\n";
     let interacaoValida = false;
-    let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.EM_ANDAMENTO);
+    let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.APROVADO);
     ordensAbertas.forEach((ordens) => {
         questao += `${ordens.id} - ${ordens.descricao}\n`
     });
