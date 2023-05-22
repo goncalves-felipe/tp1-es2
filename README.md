@@ -1,11 +1,11 @@
 # tp1-es2
 
 1. Nome dos Integrantes do Grupo
+
 - Felipe de Paula Gonçalves
 - Hector Julio Pardinho Soares
 - Joao Pedro Braga Ennes
 - Pedro Henrique Alves Moutinho
-
 
 2. Explicação do Sistema
 
@@ -22,4 +22,7 @@ fornecedor. Além disso, elas são categorizadas de acordo com o
 eletrodoméstico.
 
 3. Tecnologias Utilizadas
-- Node
+
+Neste projeto, optamos por utilizar Node com TypeScript, pois estas tecnologias
+estão alinhadas com as habilidades e experiências dos autores, permitindo-nos
+aproveitar ao máximo nosso conhecimento e proficiência.
