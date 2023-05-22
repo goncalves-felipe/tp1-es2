@@ -177,7 +177,7 @@ export class OrdemServico {
   ): void {
     this._horasPrevistas = horasPrevistas;
     this._valorFinal = valorOrcamento;
-    this.status = StatusOrdemServico.EM_ANDAMENTO;
+    this.status = StatusOrdemServico.EM_ANALISE;
   }
 
   public usarPeca(peca: Peca): void {
