@@ -173,11 +173,9 @@ export class OrdemServico {
 
   public criarOrcamento(
     horasPrevistas: number,
-    pecasPrevistas: Peca[],
     valorOrcamento: number
   ): void {
     this._horasPrevistas = horasPrevistas;
-    this._pecasPrevistas = pecasPrevistas;
     this._valorFinal = valorOrcamento;
     this.status = StatusOrdemServico.EM_ANDAMENTO;
   }
