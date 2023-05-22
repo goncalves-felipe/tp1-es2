@@ -29,7 +29,7 @@ async function interacaoUsuario() {
                 interacaoValidaUsuario = true;
                 break;
             default:
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         }
     };
 
@@ -52,10 +52,10 @@ async function interacaoAndamentoServico(cliente: Cliente) {
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
                 } else {
-                    console.log("Opção inválida");
+                    console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 }
             } catch (error) {
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
             }
         }
     } else {
@@ -87,13 +87,14 @@ async function interacaoAcoesCliente(cliente: Cliente) {
                 interacaoValidaAcoesCliente = true;
                 break;
             default:
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         }
     }
 }
 
 async function interacaoCliente() {
     let interacaoValidaUsuario = false;
+    console.log("\n")
     let questaoCliente = "Quem é você?\n"
     clientes.forEach((cliente) => {
         questaoCliente += `${cliente.id} - ${cliente.nome}\n`
@@ -113,11 +114,11 @@ async function interacaoCliente() {
                 interacaoValidaUsuario = true;
                 interacaoUsuario();
             } else {
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 break;
             }
         } catch (error) {
-            console.log("Opção inválida")
+            console.log("\n", "\x1b[31m%s\x1b[0m", "Opção inválida")
         }
 
     }
@@ -137,17 +138,19 @@ async function criarOrcamento(funcionario: Funcionario) {
     questao += `${ordensServico.length + 1} - Voltar\n`
 
     while (!interacaoValida) {
+        console.log("\n")
         const respostaOrcamento = await input({ message: questao });
         try {
             let resposta = parseInt(respostaOrcamento);
             if (resposta > 0 && resposta <= ordensServico.length) {
                 interacaoValida = true;
+                console.log("\n")
                 const horasPrevistas = await input({ message: 'Horas previstas: ' });
                 const valorOrcamento = await input({ message: 'Valor Orcamento: ' });
                 ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
-                console.log("\nAguarde enquanto estamos gerando o orçamento\n");
+                console.log("\nAguarde enquanto estamos gerando o orçamento");
                 setTimeout(() => {
-                    console.log("\x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
+                    console.log("\x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso");
                     interacaoAcaoFuncionario(funcionario);
                 }, 1000);
             } else if(resposta == ordensServico.length + 1){
@@ -172,7 +175,7 @@ async function finalizarServico(funcionario: Funcionario) {
     });
     if (ordensAbertas.length == 0) {
         setTimeout(() => {
-            console.log("\x1b[31m%s\x1b[0m","\nNão existem ordens em andamento\n");
+            console.log("\x1b[31m%s\x1b[0m","Não existem ordens em andamento");
             interacaoAcaoFuncionario(funcionario);
         }, 1000);
         return
@@ -191,11 +194,11 @@ async function finalizarServico(funcionario: Funcionario) {
                     interacaoAcaoFuncionario(funcionario);
                 }, 1000);
             } else {
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 break;
             }
         } catch (error) {
-            console.log("Opção inválida")
+            console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         }
     }
 }
@@ -208,6 +211,7 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
     })
 
     while (!interacaoValida) {
+        console.log("\n")
         const respostaFuncionario = await input({ message: questao });
         try {
             let resposta = parseInt(respostaFuncionario);
@@ -222,7 +226,7 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
                     return interacaoFuncionario();
                 }
             } else {
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 break;
             }
         } catch (error) {
@@ -234,6 +238,7 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
 
 async function interacaoFuncionario() {
     let interacaoValidaFuncionario = false;
+    console.log("\n")
     let questaoFuncionario = "Quem é você?\n"
     funcionarios.forEach((funcionario) => {
         questaoFuncionario += `${funcionario.id} - ${funcionario.nome}\n`
@@ -253,7 +258,7 @@ async function interacaoFuncionario() {
                 interacaoValidaFuncionario = true;
                 return interacaoUsuario();
             } else {
-                console.log("Opção inválida");
+                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
                 break;
             }
         } catch (error) {
