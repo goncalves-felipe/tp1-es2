@@ -52,7 +52,7 @@ async function interacaoSolicitarServico(cliente: Cliente) {
             interacaoValidaAndamentoServico = true;
             return interacaoAcoesCliente(cliente);
         } else {
-            console.log("Opção inválida");
+            opcaoInvalida();
         }
     }
 }
@@ -79,10 +79,10 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);
                 } else {
-                    console.log("Opção inválida");
+                    opcaoInvalida();
                 }
             } catch (error) {
-                console.log("Opção inválida");
+                opcaoInvalida();
             }
         }
     } else {
@@ -94,7 +94,7 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
 
 }
 
-function constroiInteracaoParaArray(mensagemBase : string, elementos : any[]) {
+function constroiInteracaoParaArray(mensagemBase: string, elementos: any[]) {
     let interacao = mensagemBase;
     elementos.forEach((elemento: any) => {
         interacao += `${elemento.id} - ${elemento.nome}\n`
@@ -108,8 +108,8 @@ async function interacaoAndamentoServico(cliente: Cliente, ordensServicoCliente:
         let questaoAndamentoServico = constroiInteracaoParaArray("Qual ordem de serviço você deseja visualizar?\n", ordensServicoCliente);
         console.log("\n");
         let respostaAndamentoServico = await input({ message: questaoAndamentoServico });
-        if(Number.isNaN(Number(respostaAndamentoServico))){ 
-            console.log("Opção inválida");
+        if (Number.isNaN(Number(respostaAndamentoServico))) {
+            opcaoInvalida();
             continue;
         }
         let ordemServicoSelecionada = ordensServicoCliente.find((ordemServico) => ordemServico.id == Number(respostaAndamentoServico));
@@ -145,7 +145,7 @@ async function interacaoAndamentoServico(cliente: Cliente, ordensServicoCliente:
         } else {
             console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         }
-    
+
     }
 }
 
@@ -174,7 +174,7 @@ async function interacaoAcoesCliente(cliente: Cliente) {
                 interacaoValidaAcoesCliente = true;
                 break;
             case "3":
-                if(ordensCliente.length == 0){
+                if (ordensCliente.length == 0) {
                     console.log("\x1b[31m%s\x1b[0m", "\nVocê não possui nenhuma ordem de serviço\n");
                     interacaoAcoesCliente(cliente);
                 } else {
@@ -257,7 +257,7 @@ async function criarOrcamento(funcionario: Funcionario) {
                 interacaoValida = true;
                 interacaoAcaoFuncionario(funcionario);
             } else {
-                console.log("Opção inválida");
+                opcaoInvalida();
                 break;
             }
         } catch (error) {
@@ -317,22 +317,18 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
 
         try {
             const resposta = parseInt(respostaFuncionario);
-
-            if (resposta >= 1 && resposta <= opcoesFuncionario.length) {
-                if (resposta === 1) {
-                    criarOrcamento(funcionario);
-                } else if (resposta === 2) {
-                    finalizarServico(funcionario);
-                } else if (resposta === 3) {
-                    return interacaoFuncionario();
-                }
-                break;
+            if (resposta === 1) {
+                criarOrcamento(funcionario);
+            } else if (resposta === 2) {
+                finalizarServico(funcionario);
+            } else if (resposta === 3) {
+                return interacaoFuncionario();
             } else {
-                console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida\n");
+                opcaoInvalida();
                 break;
             }
         } catch (error) {
-            console.log("Opção inválida");
+            opcaoInvalida();
         }
     }
 
@@ -367,6 +363,10 @@ async function interacaoFuncionario() {
             console.log("Opção inválida")
         }
     }
+}
+
+function opcaoInvalida() {
+    console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida\n");
 }
 
 main();
