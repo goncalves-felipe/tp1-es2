@@ -61,8 +61,7 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
     console.log("\nBuscanco orçamentos pendentes de aprovação ...")
     let ordensServicoCliente = ordensServico.filter(
         (ordemServico) => (ordemServico.cliente.id == cliente.id
-            && (ordemServico.status == StatusOrdemServico.APROVADO
-                || ordemServico.status == StatusOrdemServico.EM_ANALISE))
+            && ordemServico.status == StatusOrdemServico.EM_ANALISE)
     );
     if (ordensServicoCliente.length > 0) {
         let interacaoValidaAndamentoServico = false;
@@ -265,7 +264,7 @@ async function finalizarServico(funcionario: Funcionario) {
     console.log("\nBuscando ordens de serviço ...\n");
     let questao = "Qual ordem de serviço você deseja finalizar??\n";
     let interacaoValida = false;
-    let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.EM_ANDAMENTO);
+    let ordensAbertas = ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.APROVADO);
     ordensAbertas.forEach((ordens) => {
         questao += `${ordens.id} - ${ordens.descricao}\n`
     });
