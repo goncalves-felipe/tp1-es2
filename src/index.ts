@@ -146,7 +146,7 @@ async function criarOrcamento(funcionario: Funcionario) {
                 ordensServico.find((ordem) => ordem.id == resposta)?.criarOrcamento(parseFloat(horasPrevistas), parseFloat(valorOrcamento));
                 console.log("\nAguarde enquanto estamos gerando o orçamento\n");
                 setTimeout(() => {
-                    console.log("\1x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
+                    console.log("\x1b[32m%s\x1b[0m","\nOrçamento gerado com sucesso\n");
                     interacaoAcaoFuncionario(funcionario);
                 }, 1000);
             } else {
