@@ -43,7 +43,6 @@ async function interacaoSolicitarServico(cliente: Cliente) {
         console.log("\n")
         const produto = await input({ message: "Qual o produto que deseja consertar?" });
         const descricao = await input({ message: "Descreva o serviço que deseja contratar" });
-        // FIX product number
         const novaOrdem: OrdemServico = new OrdemServico(ordensServico.length + 1)
         if (novaOrdem) {
             novaOrdem.criarOrdemServico(produto, descricao, cliente);
@@ -61,8 +60,7 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
     console.log("\nBuscanco orçamentos pendentes de aprovação ...")
     let ordensServicoCliente = ordensServico.filter(
         (ordemServico) => (ordemServico.cliente.id == cliente.id
-            && (ordemServico.status == StatusOrdemServico.APROVADO
-                || ordemServico.status == StatusOrdemServico.EM_ANALISE))
+            && ordemServico.status == StatusOrdemServico.EM_ANALISE)
     );
     if (ordensServicoCliente.length > 0) {
         let interacaoValidaAndamentoServico = false;
