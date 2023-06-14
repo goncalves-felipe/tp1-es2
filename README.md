@@ -35,3 +35,6 @@ Após analise do lizard_inicial.txt refatoramos as três maiores complexidades q
 6. Execução do projeto
 npm install
 npm start
+
+7. Execução dos testes
+npm run test

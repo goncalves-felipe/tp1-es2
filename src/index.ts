@@ -74,7 +74,7 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
             try {
                 let orcamentoSelecionada = orcamentosServicoCliente.find((orcamento) => orcamento.id == Number(respostaOrcamento));
                 if (orcamentoSelecionada) {
-                    orcamentoSelecionada.aprovarOrdemServico();
+                    orcamentoSelecionada.aprovarOrcamento();
                     console.log(`O orçamento relacionado a ordem de serviço ${orcamentoSelecionada.id}, de ${orcamentoSelecionada.valorOrcamento} reias, foi aprovado com sucesso!`)
                     interacaoValidaAndamentoServico = true;
                     return interacaoAcoesCliente(cliente);

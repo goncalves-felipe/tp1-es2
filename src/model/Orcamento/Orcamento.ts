@@ -62,7 +62,10 @@ export class Orcamento {
     this._ordemServico = value;
   }
 
-  public aprovarOrdemServico(): void {
+  public aprovarOrcamento(): void {
+    if(this._status !== StatusOrcamentos.AGUARDANDO_CLIENTE)  {
+      throw new Error("Erro: O orçamento não está aguardando o cliente");
+    }
     this._ordemServico.valorFinal = this._valorOrcamento;
     this._ordemServico.status = StatusOrdemServico.APROVADO;
     this.status = StatusOrcamentos.APROVADO;

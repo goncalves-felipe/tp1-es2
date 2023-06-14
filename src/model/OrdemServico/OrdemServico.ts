@@ -81,18 +81,31 @@ export class OrdemServico {
   }
 
   public recusarOrdemServico(): void {
+    if(this._status === StatusOrdemServico.FINALIZADO_SUCESSO || this._status === StatusOrdemServico.FINALIZADO_FALHA) {
+      throw Error("Erro: Ordem de Serviço já finalizada");
+    }
     this.status = StatusOrdemServico.RECUSADO;
   }
 
   public finalizarComSucesso(): void {
+    if(this._status === StatusOrdemServico.FINALIZADO_SUCESSO || this._status === StatusOrdemServico.FINALIZADO_FALHA) {
+      throw Error("Erro: Ordem de Serviço já finalizada");
+    }
     this._status = StatusOrdemServico.FINALIZADO_SUCESSO;
   }
 
   public finalizarComFalha(): void {
+    if(this._status === StatusOrdemServico.FINALIZADO_SUCESSO || this._status === StatusOrdemServico.FINALIZADO_FALHA) {
+      throw Error("Erro: Ordem de Serviço já finalizada");
+    }
     this._status = StatusOrdemServico.FINALIZADO_FALHA;
   }
 
   public pagar(valor: number): void {
+    if(valor < 0) {
+      throw Error("Erro: valor pago não pode ser negativo");
+    }
+
     if (this._valorPago + valor > this._valorFinal)
       throw Error("Erro: valor pago maior que valor total");
 
