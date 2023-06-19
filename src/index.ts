@@ -119,10 +119,13 @@ async function interacaoAprovarOrcamento(cliente: Cliente) {
   }
 }
 
-function constroiInteracaoParaArray(mensagemBase: string, elementos: any[]) {
+function constroiInteracaoParaArray(
+  mensagemBase: string,
+  elementos: OrdemServico[]
+) {
   let interacao = mensagemBase;
-  elementos.forEach((elemento: any) => {
-    interacao += `${elemento.id} - ${elemento.nome}\n`;
+  elementos.forEach((elemento: OrdemServico) => {
+    interacao += `${elemento.id} - ${elemento.produto}\n`;
   });
   return interacao;
 }
@@ -268,6 +271,7 @@ async function interacaoCliente() {
       } else if (resposta == clientes.length + 1) {
         interacaoValidaUsuario = true;
         await interacaoUsuario();
+        return;
       } else {
         console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
       }
@@ -424,7 +428,8 @@ async function interacaoFuncionario() {
         await interacaoAcaoFuncionario(funcionarioSelecionado);
       } else if (resposta == funcionarios.length + 1) {
         interacaoValidaFuncionario = true;
-        return await interacaoUsuario();
+        await interacaoUsuario();
+        return;
       } else {
         console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         break;
