@@ -72,7 +72,7 @@ describe('Testes para a interação de cliente', () => {
 
 });
 
-describe('Testes para a interação de cliente', () => {
+describe('Testes para a interação de funcionario', () => {
 
     it('Criar um orçamento', async () => {
         mockedInputHandler.mockResolvedValueOnce('2'); //seleciona funcionario
