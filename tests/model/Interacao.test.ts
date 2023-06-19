@@ -4,7 +4,7 @@ jest.mock('@inquirer/input', () => {
 
 import input from '@inquirer/input';
 import { interacaoUsuario } from '../../src/index';
-import { clientes, funcionarios, ordensServico, orcamentos } from "../../src/dados";
+import { ordensServico } from "../../src/dados";
 
 describe('Testes para a interação de cliente', () => {
     let mockedInputHandler: jest.MockedFunction<typeof input>;
@@ -21,7 +21,6 @@ describe('Testes para a interação de cliente', () => {
 
         expect(mockedInputHandler).toHaveBeenCalledTimes(1);
     });
-
 
     it('Solicita novo servico', async () => {
         const quantidadeOrdensDeServico = ordensServico.length;
@@ -69,7 +68,7 @@ describe('Testes para a interação de cliente', () => {
         expect(mockedInputHandler).toHaveBeenCalledTimes(7);
     });
 
-    it('Usuario é um funcionario e deseja criar um orçamento', async () => {
+    it('Criar um orçamento', async () => {
         mockedInputHandler.mockResolvedValueOnce('2'); //seleciona funcionario
         mockedInputHandler.mockResolvedValueOnce('1'); //seleciona usuario
         mockedInputHandler.mockResolvedValueOnce('1'); //criar orcamento
