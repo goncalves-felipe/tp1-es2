@@ -28,7 +28,8 @@ export async function interacaoUsuario() {
         break;
       case "3":
         console.log("Saindo...");
-        process.exit();
+        interacaoValidaUsuario = true;
+        return;
       default:
         console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
     }
@@ -268,6 +269,7 @@ async function interacaoCliente() {
         interacaoValidaUsuario = true;
         let clienteSelecionado = clientes[resposta - 1];
         await interacaoAcoesCliente(clienteSelecionado);
+        return;
       } else if (resposta == clientes.length + 1) {
         interacaoValidaUsuario = true;
         await interacaoUsuario();
@@ -325,9 +327,11 @@ async function criarOrcamento(funcionario: Funcionario) {
 
         console.log("\x1b[32m%s\x1b[0m", "\nOrçamento gerado com sucesso");
         await interacaoAcaoFuncionario(funcionario);
+        return;
       } else if (resposta == ordensServico.length + 1) {
         interacaoValida = true;
         await interacaoAcaoFuncionario(funcionario);
+        return;
       } else {
         opcaoInvalida();
         break;
@@ -370,6 +374,7 @@ async function finalizarServico(funcionario: Funcionario) {
         console.log("\nAguarde enquanto estamos finalizando o serviço\n");
         console.log("\x1b[32m%s\x1b[0m", "\nServiço finalizado com sucesso\n");
         await interacaoAcaoFuncionario(funcionario);
+        return;
       } else {
         console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
         break;
@@ -393,14 +398,16 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
       const resposta = parseInt(respostaFuncionario);
       if (resposta === 1) {
         await criarOrcamento(funcionario);
+        return;
       } else if (resposta === 2) {
         await finalizarServico(funcionario);
+        return;
       } else if (resposta === 3) {
         await interacaoFuncionario();
         return;
       } else {
         opcaoInvalida();
-        break;
+        return;
       }
     } catch (error) {
       opcaoInvalida();
@@ -427,6 +434,7 @@ async function interacaoFuncionario() {
         interacaoValidaFuncionario = true;
         let funcionarioSelecionado = funcionarios[resposta - 1];
         await interacaoAcaoFuncionario(funcionarioSelecionado);
+        return;
       } else if (resposta == funcionarios.length + 1) {
         interacaoValidaFuncionario = true;
         await interacaoUsuario();
