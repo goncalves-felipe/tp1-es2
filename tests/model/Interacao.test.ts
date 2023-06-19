@@ -5,12 +5,15 @@ import { clientes, funcionarios, ordensServico, orcamentos } from "../../src/dad
 jest.mock('@inquirer/input', () => {
     return jest.fn().mockResolvedValueOnce('3');
 });
-let mockedInputHandler: jest.MockedFunction<typeof input>;
-beforeEach(() => {
-    (input as jest.MockedFunction<typeof input>).mockClear();
-    mockedInputHandler = input as jest.MockedFunction<typeof input>;
-});
+
 describe('Testes para a interação de cliente', () => {
+    let mockedInputHandler: jest.MockedFunction<typeof input>;
+
+    beforeEach(() => {
+        (input as jest.MockedFunction<typeof input>).mockClear();
+        mockedInputHandler = input as jest.MockedFunction<typeof input>;
+    });
+
     it('Usuario escolhe a opção de sair', async () => {
         mockedInputHandler.mockResolvedValueOnce('3');
 
@@ -65,9 +68,7 @@ describe('Testes para a interação de cliente', () => {
 
         expect(mockedInputHandler).toHaveBeenCalledTimes(7);
     });
-});
 
-describe('Testes para a interação do funcionário', () => {
     it('Usuario é um funcionario e deseja criar um orçamento', async () => {
         mockedInputHandler.mockResolvedValueOnce('2'); //seleciona funcionario
         mockedInputHandler.mockResolvedValueOnce('1'); //seleciona usuario
