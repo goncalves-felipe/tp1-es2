@@ -2,10 +2,12 @@ import input from '@inquirer/input';
 import { interacaoUsuario } from '../../src/index';
 import { clientes, funcionarios, ordensServico, orcamentos } from "../../src/dados";
 
+
 jest.mock('@inquirer/input', () => {
     return jest.fn().mockResolvedValueOnce('3');
 });
 let mockedInputHandler: jest.MockedFunction<typeof input>;
+
 
 beforeEach(() => {
     (input as jest.MockedFunction<typeof input>).mockClear();
