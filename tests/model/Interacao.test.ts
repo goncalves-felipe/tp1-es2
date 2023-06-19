@@ -10,7 +10,7 @@ let mockedInputHandler: jest.MockedFunction<typeof input>;
 
 
 beforeEach(() => {
-    (input as jest.MockedFunction<typeof input>).mockClear();
+    (input as jest.MockedFunction<typeof input>).mockReset();
     mockedInputHandler = input as jest.MockedFunction<typeof input>;
 });
 describe('Testes para a interação de cliente', () => {
