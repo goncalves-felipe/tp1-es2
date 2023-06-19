@@ -11,7 +11,7 @@ function main(): void {
   interacaoUsuario();
 }
 
-async function interacaoUsuario() {
+export async function interacaoUsuario() {
   let interacaoValidaUsuario = false;
   while (!interacaoValidaUsuario) {
     const respostaTipoUsuario = await input({
@@ -280,6 +280,7 @@ async function interacaoCliente() {
     }
   }
 }
+
 const opcoesFuncionario = [
   { id: 1, descricao: "Criar Orcamento" },
   { id: 2, descricao: "Finalizar Serviço" },
