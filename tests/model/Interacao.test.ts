@@ -2,9 +2,7 @@ import input from '@inquirer/input';
 import { interacaoUsuario } from '../../src/index';
 import { clientes, funcionarios, ordensServico, orcamentos } from "../../src/dados";
 
-jest.mock('@inquirer/input', () => {
-    return jest.fn().mockResolvedValueOnce('3');
-});
+jest.mock('@inquirer/input', jest.fn(() => jest.fn().mockResolvedValueOnce('3')));
 
 describe('Testes para a interação de cliente', () => {
     let mockedInputHandler: jest.MockedFunction<typeof input>;
