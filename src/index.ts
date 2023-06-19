@@ -28,8 +28,7 @@ async function interacaoUsuario() {
         break;
       case "3":
         console.log("Saindo...");
-        interacaoValidaUsuario = true;
-        return;
+        process.exit();
       default:
         console.log("\x1b[31m%s\x1b[0m", "\nOpção inválida", "\n");
     }
