@@ -234,7 +234,7 @@ async function criarOrcamento(funcionario: Funcionario) {
     ordensServico.filter((ordens) => ordens.status == StatusOrdemServico.CRIADO).forEach((ordens) => {
         questao += `${ordens.id} - ${ordens.descricao}\n`
     });
-    questao += `${ordensServico.length + 1} - Voltar\n`
+    questao += `${ordensServico.length + 1} - Voltar\n`;
 
     while (!interacaoValida) {
         console.log("\n")
@@ -318,9 +318,9 @@ async function interacaoAcaoFuncionario(funcionario: Funcionario) {
         try {
             const resposta = parseInt(respostaFuncionario);
             if (resposta === 1) {
-                criarOrcamento(funcionario);
+                await criarOrcamento(funcionario);
             } else if (resposta === 2) {
-                finalizarServico(funcionario);
+                await finalizarServico(funcionario);
             } else if (resposta === 3) {
                 return interacaoFuncionario();
             } else {
